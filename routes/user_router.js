@@ -52,10 +52,10 @@ module.exports = {
 
         //1. JWT BASED AUTHENTICATION FOR SIGNUP
         app.post("/register", (req, res) => {
-            var username = req.body.username;
+            var email = req.body.email;
             var password = req.body.password;
             var user = {
-                username: username,
+                email: email,
                 password: password
             }
             bcrypt.hash(password, 10).then((hash) => {
