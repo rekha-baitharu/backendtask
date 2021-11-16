@@ -51,24 +51,23 @@ module.exports = {
         }
 
         //1. JWT BASED AUTHENTICATION FOR SIGNUP
-        app.post("/register", (req, res) => {
-            var email = req.body.email;
-            var password = req.body.password;
-            var user = {
-                email: email,
-                password: password
-            }
-            bcrypt.hash(password, 10).then((hash) => {
-                database.db().collection("task").insertOne(user, function (err, doc) {
-                    res.json({ status: true, message: "User registered" });
-                }).then(() => {
-                    res.json("User Registered")
-                }).catch((err) => {
-                    if (err) {
-                        res.status(400)
-                    }
+        app.post("/register", async (req, res) => {
+            try {
+                var email = req.body.email;
+                var password = req.body.password;
+                var user = {
+                    email: email,
+                    password: password
+                }
+                bcrypt.hash(password, 10).then((hash) => {
+                    database.db().collection("task").insertOne(user, function (err, doc) {
+                        res.json({ status: true, message: "User registered" });
+                    })
                 })
-            })
+            } catch (err) {
+                console.log(err);
+                res.status(500).send("Something went wrong");
+            }
         })
 
         //2.OPEN API FOR ALL USERS
